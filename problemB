@@ -1,0 +1,45 @@
+#include <iostream>
+using namespace std;
+ 
+const int MOD = 1e9 + 7;
+ 
+long long power(long long x, long long y) {
+    long long res = 1;
+    x = x % MOD;
+    while (y > 0) {
+        if (y & 1)
+            res = (res*x) % MOD;
+        y = y >> 1;
+        x = (x*x) % MOD;
+    }
+    return res;
+}
+ 
+long long binomialCoefficient(int n, int k){
+    if (k > n - k){
+        k = n - k;
+    }
+ 
+    long long res = 1;
+ 
+    for(int i = 0; i < k; ++i){
+        res = (res * (n - i)) % MOD; 
+        res = (res * power(i + 1, MOD - 2)) % MOD;
+    }
+ 
+    return res;
+}
+ 
+long long validParentheses(int N){
+    if(N % 2 == 1) return 0;
+    int k = N / 2;
+    long long c = binomialCoefficient(N, k);
+    return (c * power(k + 1, MOD - 2)) % MOD;
+}
+ 
+int main(){
+    int n;
+    cin >> n; 
+    n *= 2;
+    cout << validParentheses(n);
+}
