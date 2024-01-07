@@ -1,46 +1,33 @@
 #include <bits/stdc++.h>
 using namespace std;
- 
-// Function to find the maximum possible
-// amount of money we can win.
+
 long long maximumAmount(int arr[], int n)
 {
 	long long sum = 0;
 	vector<long long> dp(n, 0);
 	for (int i = (n - 1); i >= 0; i--) {
- 
-		// Calculating the sum of all the elements
 		sum += arr[i];
 		for (int j = i; j < n; j++) {
 			if (i == j) {
- 
-				// If there is only one element then we
-				// can only get arr[i] score
-				dp[j] = arr[j];
+			    dp[j] = arr[j];
 			}
 			else {
-				// Calculating the dp states
-				// using the relation
-				dp[j] = max(arr[i] - dp[j],
-							arr[j] - dp[j - 1]);
+			    dp[j] = max(arr[i] - dp[j], arr[j] - dp[j - 1]);
 			}
 		}
 	}
-	// Equating and returning the final answer
-	// as per the relation
+
 	return (sum + dp[n - 1]) / 2;
 }
  
-// Driver Code
 int main()
 {
-	 int n;
-	int arr1[5001];
+    int n;
+    int arr1[5001];
     cin >> n;
     for (int i = 0; i < n; ++i){
         cin >> arr1[i];
     }
 	printf("%lld", maximumAmount(arr1, n));
- 
 	return 0;
 }
