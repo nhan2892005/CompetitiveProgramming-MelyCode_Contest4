@@ -1,0 +1,46 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Project {
+    int start, end, reward;
+};
+
+bool compare(Project a, Project b) {
+    return a.end < b.end;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    cin >> n;
+    vector<Project> projects(n);
+    for(int i = 0; i < n; i++)
+        cin >> projects[i].start >> projects[i].end >> projects[i].reward;
+
+    sort(projects.begin(), projects.end(), compare);
+
+    vector<long long> dp(n);
+    dp[0] = projects[0].reward;
+    for(int i = 1; i < n; i++) {
+        int l = -1;
+        int start = 0, end = i - 1;
+        while(start <= end) {
+            int mid = start + (end - start) / 2;
+            if(projects[mid].end < projects[i].start) {
+                l = mid;
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+
+        long long prev = (l == -1) ? 0 : dp[l];
+        dp[i] = max(dp[i - 1], projects[i].reward + prev);
+    }
+
+    cout << dp[n - 1];
+
+    return 0;
+}
