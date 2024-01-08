@@ -1,0 +1,94 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define ll long long
+#define MASK(i) (1LL << (i))
+
+const bool multitest = 0;
+const int MaxN = 5e4+10;
+const int maxRow = 3000;
+const int maxCol = 3000;
+const int MOD =  1e9+7;
+
+int mp[MaxN], b[MaxN];
+int dp[MASK(7)+1];
+int dx[] = {}, dy[] = {};
+int k, n;
+int st[MaxN << 2][MASK(7)+1];
+
+struct gift{
+    int val, cor;
+} a[MaxN];
+
+void upd(int pos, int l, int r, int id, int val, int mask){
+    while(true){
+        if(l == r) break;
+        int mid = (l + r) >> 1;
+        if(id <= mid){
+            pos = pos << 1;
+            r = mid;
+        }else{
+            pos = pos << 1 | 1;
+            l = mid + 1;
+        }
+    }
+    st[pos][mask] = (st[pos][mask] + val)%MOD;
+    while(pos > 1){
+        pos = pos >> 1;
+        st[pos][mask] = (st[pos << 1][mask] + st[pos << 1 | 1][mask])%MOD;
+    }
+    return;
+}
+
+int get(int pos, int l, int r, int u, int v, int mask){
+    if(l > v || r < u || u > v) return 0;
+    if(u <= l && r <= v) return st[pos][mask];
+    int mid = (l + r) >> 1;
+    return (get(pos << 1, l, mid, u, v, mask) + get(pos << 1 | 1, mid + 1, r, u, v, mask)) % MOD;
+}
+
+void Inp(){
+    cin >> n >> k;
+    for(int i = 1; i <= n; i++) {
+        cin >> a[i].val >> a[i].cor;
+        a[i].cor--;
+        b[i] = a[i].val;
+    }
+}
+
+void solve(){
+    Inp();
+    int res = 0;
+    upd(1, 1, n+1, 1, 1, 0);
+    int cnt = 1;
+    sort(b+1, b+1+n);
+    for(int i = 1; i <= n; i ++){
+        if(!mp[b[i]]) cnt++;
+        mp[b[i]] = cnt;
+    }
+    mp[0] = 1;
+    for(int i = 1; i <= n; i ++){
+        memset(dp, 0, sizeof dp);
+        for(int mask = 0; mask < MASK(k); mask ++){
+            int tmp = get(1, 1, n+1, 1, mp[a[i].val] - 1, mask);
+            dp[mask | MASK(a[i].cor)] = (dp[mask | MASK(a[i].cor)] + tmp)%MOD;
+            upd(1, 1, n+1, mp[a[i].val], dp[mask], mask);
+        }
+        res = (res + dp[MASK(k)-1])%MOD;
+    }
+    cout << res;
+}
+
+signed main(){
+    ios_base::sync_with_stdio(0); 
+    cin.tie(0); 
+    cout.tie(0);
+    if(multitest){
+        int t; cin >> t;
+        while(t--){
+            solve();
+        }
+    }
+    else solve();
+}
