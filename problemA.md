@@ -13,6 +13,7 @@ In ra một số nguyên là số điểm mà Me đạt được nếu cả hai 
 ## Ví dụ
 ### Đầu vào
 4
+
 4 5 1 3
 ### Đầu ra
 8
