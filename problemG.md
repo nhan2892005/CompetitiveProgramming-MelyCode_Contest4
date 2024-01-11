@@ -15,9 +15,13 @@ Một dòng duy nhất là số cách chọn các món quà kết quả chia l�
 ## Ví dụ
 ### Input
 4 3
+
 1 1
+
 3 2
+
 2 2
+
 4 3
 
 ### Output
