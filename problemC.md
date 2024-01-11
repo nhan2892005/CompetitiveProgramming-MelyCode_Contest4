@@ -13,9 +13,13 @@ In ra một số nguyên là số tiền tối đa có thể nhận được.
 ## Ví dụ
 ### Đầu vào
 4
+
 2 4 4
+
 3 6 6
+
 6 8 2
+
 5 7 3
 ### Đầu ra
 7
