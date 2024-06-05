@@ -8,6 +8,8 @@ int dp[512][512], c[512];
 const int INF = 500;
  
 int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
   int N; cin >> N;
   REP(i, N) cin >> c[i];
   
